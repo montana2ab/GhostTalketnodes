@@ -1,0 +1,181 @@
+# Default values for ghostnodes
+
+replicaCount: 5
+
+image:
+  repository: your-registry/ghostnodes
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9090"
+  prometheus.io/path: "/metrics"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+
+service:
+  type: LoadBalancer
+  port: 9000
+  targetPort: 9000
+  annotations: {}
+
+metrics:
+  enabled: true
+  port: 9090
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: node1.ghostnodes.network
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: ghostnodes-tls
+      hosts:
+        - node1.ghostnodes.network
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - ghostnodes
+        topologyKey: kubernetes.io/hostname
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 100Gi
+  mountPath: /var/lib/ghostnodes/data
+
+config:
+  nodeId: "node1"
+  listenAddress: "0.0.0.0:9000"
+  publicAddress: "node1.ghostnodes.network:9000"
+  
+  bootstrapNodes:
+    - "node2.ghostnodes.network:9000"
+    - "node3.ghostnodes.network:9000"
+    - "node4.ghostnodes.network:9000"
+    - "node5.ghostnodes.network:9000"
+  
+  storage:
+    backend: "rocksdb"
+    path: "/var/lib/ghostnodes/data"
+    maxSizeGB: 100
+  
+  swarm:
+    replicationFactor: 3
+    ttlDays: 14
+  
+  rateLimit:
+    enabled: true
+    requestsPerSecond: 100
+    burst: 200
+  
+  pow:
+    enabled: true
+    difficulty: 20
+  
+  metrics:
+    enabled: true
+    listenAddress: "0.0.0.0:9090"
+  
+  logging:
+    level: "info"
+    format: "json"
+    output: "/var/log/ghostnodes/node.log"
+
+tls:
+  enabled: true
+  secretName: ghostnodes-tls
+  certFile: "/etc/ghostnodes/tls/tls.crt"
+  keyFile: "/etc/ghostnodes/tls/tls.key"
+
+mtls:
+  enabled: true
+  secretName: ghostnodes-mtls
+  caFile: "/etc/ghostnodes/mtls/ca.crt"
+  certFile: "/etc/ghostnodes/mtls/tls.crt"
+  keyFile: "/etc/ghostnodes/mtls/tls.key"
+
+secrets:
+  privateKey:
+    create: true
+    name: ghostnodes-private-key
+    key: "node.key"
+
+# Monitoring
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+
+# Health checks
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 9000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 9000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3

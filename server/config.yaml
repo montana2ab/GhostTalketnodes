@@ -1,0 +1,61 @@
+# GhostNodes Configuration Example
+
+# Node identity
+node_id: "node1"
+private_key_file: "keys/node1.key"
+
+# Network configuration
+listen_address: "0.0.0.0:9000"
+public_address: "node1.ghostnodes.network:9000"
+
+# Bootstrap nodes (other nodes in the network)
+bootstrap_nodes:
+  - "node2.ghostnodes.network:9000"
+  - "node3.ghostnodes.network:9000"
+  - "node4.ghostnodes.network:9000"
+  - "node5.ghostnodes.network:9000"
+
+# TLS configuration
+tls:
+  cert_file: "/etc/letsencrypt/live/node1.ghostnodes.network/fullchain.pem"
+  key_file: "/etc/letsencrypt/live/node1.ghostnodes.network/privkey.pem"
+
+# mTLS for node-to-node communication
+mtls:
+  enabled: true
+  ca_file: "/etc/ghostnodes/certs/ca.crt"
+  cert_file: "/etc/ghostnodes/certs/node1-client.crt"
+  key_file: "/etc/ghostnodes/certs/node1-client.key"
+
+# Storage backend
+storage:
+  backend: "rocksdb"  # or "memory" for testing
+  path: "/var/lib/ghostnodes/data"
+  max_size_gb: 100
+
+# Swarm configuration
+swarm:
+  replication_factor: 3  # k-replica
+  ttl_days: 14           # Message TTL
+
+# Rate limiting
+rate_limit:
+  enabled: true
+  requests_per_second: 100
+  burst: 200
+
+# Proof of Work (anti-spam)
+pow:
+  enabled: true
+  difficulty: 20  # bits
+
+# Metrics
+metrics:
+  enabled: true
+  listen_address: "0.0.0.0:9090"
+
+# Logging
+logging:
+  level: "info"      # debug, info, warn, error
+  format: "json"     # json or text
+  output: "/var/log/ghostnodes/node.log"

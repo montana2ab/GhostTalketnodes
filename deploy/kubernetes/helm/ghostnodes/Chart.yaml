@@ -1,0 +1,22 @@
+apiVersion: v2
+name: ghostnodes
+description: A Helm chart for GhostNodes Service Nodes
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+keywords:
+  - messaging
+  - privacy
+  - decentralized
+  - onion-routing
+
+maintainers:
+  - name: GhostTalk Team
+    email: team@ghosttalk.example
+
+home: https://github.com/yourorg/GhostTalketnodes
+sources:
+  - https://github.com/yourorg/GhostTalketnodes
+
+icon: https://ghosttalk.example/icon.png
