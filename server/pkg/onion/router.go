@@ -1,7 +1,6 @@
 package onion
 
 import (
-	"bytes"
 	"crypto/ed25519"
 	"encoding/binary"
 	"errors"
@@ -80,14 +79,14 @@ func (r *Router) ProcessPacket(packet []byte) (*RoutingDecision, error) {
 	}
 	
 	// Derive keys
-	encKey, hmacKey, blindingFactor, err := common.DeriveKeys(sharedSecret, "hop-0")
+	encKey, hmacKeyBytes, blindingFactor, err := common.DeriveKeys(sharedSecret, "GhostTalk-v1")
 	if err != nil {
 		r.packetsDropped++
 		return nil, fmt.Errorf("key derivation failed: %w", err)
 	}
 	
 	// Verify HMAC
-	computedHMAC := common.ComputeHMAC(hmacKey, append(onionPkt.EphemeralKey, onionPkt.RoutingBlob...))
+	computedHMAC := common.ComputeHMAC(hmacKeyBytes, append(onionPkt.EphemeralKey, onionPkt.RoutingBlob...))
 	if !common.VerifyHMAC(onionPkt.HeaderHMAC, computedHMAC) {
 		r.packetsDropped++
 		return nil, errors.New("HMAC verification failed")
@@ -148,7 +147,7 @@ func (r *Router) ProcessPacket(packet []byte) (*RoutingDecision, error) {
 	// Rest is already zeros
 	
 	// Compute new HMAC for next hop
-	nextHMAC := common.ComputeHMAC(hmacKey, append(nextEphemeralKey, nextRoutingBlob...))
+	nextHMAC := common.ComputeHMAC(hmacKeyBytes, append(nextEphemeralKey, nextRoutingBlob...))
 	
 	// Reassemble packet
 	nextPacket := r.assemblePacket(nextEphemeralKey, nextHMAC, nextRoutingBlob, onionPkt.EncryptedPayload)

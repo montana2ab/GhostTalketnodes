@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Build artifacts
+bin/
+*.exe
+*.test
+*.out
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+coverage.out
+coverage.html
+
+# Documentation
+*.md
+docs/
+
+# Keys (never include in image)
+keys/
+*.key
+*.pem
+
+# Temporary files
+tmp/
+temp/
+*.tmp
