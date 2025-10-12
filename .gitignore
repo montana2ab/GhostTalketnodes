@@ -1,0 +1,78 @@
+# macOS
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+go.work
+
+# Build artifacts
+bin/
+build/
+dist/
+target/
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Kubernetes
+*.kubeconfig
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage.out
+*.cover
+.coverage
+htmlcov/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+*.pem
+*.key
+!terraform/**/*.key
+*.crt
+!terraform/**/*.crt
+
+# Temporary files
+tmp/
+temp/
+*.tmp

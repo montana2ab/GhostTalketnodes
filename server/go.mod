@@ -1,0 +1,26 @@
+module github.com/montana2ab/GhostTalketnodes/server
+
+go 1.21
+
+require (
+	github.com/gorilla/mux v1.8.1
+	github.com/prometheus/client_golang v1.17.0
+	github.com/tecbot/gorocksdb v0.0.0-20191217155057-f0fad39f321c
+	golang.org/x/crypto v0.17.0
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
+	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
+	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
+	github.com/prometheus/client_model v0.4.1-0.20230718164431-9a2bf3000d16 // indirect
+	github.com/prometheus/common v0.44.0 // indirect
+	github.com/prometheus/procfs v0.11.1 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	google.golang.org/protobuf v1.31.0 // indirect
+)
