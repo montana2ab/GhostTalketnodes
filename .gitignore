@@ -29,6 +29,7 @@ Package.resolved
 *.out
 vendor/
 go.work
+server/ghostnodes
 
 # Build artifacts
 bin/
