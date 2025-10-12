@@ -1,0 +1,39 @@
+# Example Terraform Variables
+# Copy to terraform.tfvars and fill in your values
+
+# Environment
+environment = "production"
+
+# Domain
+domain_name = "ghostnodes.network"
+
+# AWS
+aws_region        = "us-east-1"
+aws_instance_type = "t3.medium"
+
+# GCP
+gcp_project_id    = "your-gcp-project-id"
+gcp_region        = "us-central1"
+gcp_instance_type = "n1-standard-2"
+
+# DigitalOcean
+do_token         = "your-digitalocean-token"
+do_instance_size = "s-2vcpu-4gb"
+
+# Storage
+storage_size_gb = 100
+
+# SSH Access
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ..."
+
+# Security (IMPORTANT: Restrict in production!)
+allowed_ssh_cidrs = [
+  "your-office-ip/32",
+  "your-vpn-ip/32"
+]
+
+# Monitoring
+monitoring_retention_days = 30
+
+# TLS
+acme_email = "admin@yourorg.com"
