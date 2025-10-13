@@ -8,6 +8,7 @@ Native iOS client for the GhostTalk decentralized messaging system.
 - 🧅 Onion routing (3-hop circuits)
 - 👻 Anonymous (no phone number or email required)
 - 📱 Native SwiftUI interface
+- 👤 User profiles (display name, avatar, status)
 - 🔄 Store-and-forward messaging
 - 🔔 Encrypted push notifications
 - 📂 Encrypted local storage (SQLCipher)
@@ -61,8 +62,9 @@ ios/
 │       │   ├── ConversationsListView.swift
 │       │   ├── ChatView.swift
 │       │   └── NewChatView.swift
-│       ├── Settings/                # 5 settings views
+│       ├── Settings/                # 6 settings views
 │       │   ├── SettingsView.swift
+│       │   ├── UserProfileView.swift
 │       │   ├── RecoveryPhraseDisplayView.swift
 │       │   ├── PrivacySettingsView.swift
 │       │   ├── NetworkSettingsView.swift
@@ -174,6 +176,17 @@ Or in Xcode:
 - No analytics or telemetry
 - Messages stored only locally (encrypted)
 - Can be deleted at any time
+
+## User Profile
+
+The app includes a customizable user profile feature:
+
+- **Display Name**: Set a friendly name shown to contacts
+- **Avatar**: Upload a profile picture from your photo library
+- **Status Message**: Share a short bio or status text
+- **Privacy**: Profile data stored locally (not on servers)
+
+See [PROFILE_FEATURE.md](PROFILE_FEATURE.md) for detailed documentation.
 
 ## Contributing
 
