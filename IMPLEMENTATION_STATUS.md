@@ -406,8 +406,8 @@ The GhostTalk project has a solid foundation with:
 **Expected Production**: 2.5 months
 
 The project is on track for a successful launch. Major remaining work includes:
-1. Completing iOS UI (SwiftUI interfaces)
-2. Adding storage layer (SQLCipher)
+1. Adding mTLS between nodes for secure inter-node communication
+2. Adding storage layer (SQLCipher) for iOS client
 3. Integration and E2E testing
 4. Production deployment and monitoring
 5. Security audit
