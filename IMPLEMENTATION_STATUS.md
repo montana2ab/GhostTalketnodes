@@ -62,13 +62,13 @@ This document tracks the implementation status of the GhostTalk decentralized me
 
 #### In Progress 🔄
 - [ ] Admin API (RBAC, node management)
-- [ ] APNs Notifier bridge
 - [ ] Proof-of-Work validation
 - [ ] mTLS between nodes
 - [x] Integration tests (onion router - 10 tests passing)
 - [ ] E2E tests
 
 #### Recently Completed ✅
+- [x] APNs Notifier bridge (8 tests passing)
 - [x] Rate limiting middleware (7 tests passing)
 - [x] RocksDB storage backend (with build tag support)
 
@@ -241,7 +241,29 @@ PASS
 ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/middleware	0.154s
 ```
 
-**Total: 25 tests, 25 passing**
+#### APNs Notifier Tests (pkg/apns)
+```
+=== RUN   TestNewNotifier_InvalidConfig
+--- PASS: TestNewNotifier_InvalidConfig (0.00s)
+=== RUN   TestRegisterDevice
+--- PASS: TestRegisterDevice (0.00s)
+=== RUN   TestUnregisterDevice
+--- PASS: TestUnregisterDevice (0.00s)
+=== RUN   TestSendNotification_NoRegistration
+--- PASS: TestSendNotification_NoRegistration (0.00s)
+=== RUN   TestStats
+--- PASS: TestStats (0.00s)
+=== RUN   TestCleanup
+--- PASS: TestCleanup (0.00s)
+=== RUN   TestGetRegistration
+--- PASS: TestGetRegistration (0.00s)
+=== RUN   TestNotificationPayload
+--- PASS: TestNotificationPayload (0.00s)
+PASS
+ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/apns	0.003s
+```
+
+**Total: 33 tests, 33 passing**
 
 ### Build Status
 - ✅ Go server builds successfully
@@ -312,7 +334,7 @@ ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/middleware	0.154s
 
 ### Short-term (Week 3-4)
 6. ~~Complete iOS UI (Onboarding, Chat, Settings)~~ ✅
-7. Implement APNs notifier
+7. ~~Implement APNs notifier~~ ✅
 8. Add mTLS between nodes
 9. Complete E2E test suite
 10. Finish Terraform modules
@@ -378,10 +400,10 @@ The GhostTalk project has a solid foundation with:
 - ✅ CI/CD pipeline for automated testing and building
 - ✅ Integration tests for server onion router
 
-**Overall Progress**: ~70% complete  
+**Overall Progress**: ~75% complete  
 **Production Ready**: No (alpha stage)  
-**Expected Beta**: 2 months  
-**Expected Production**: 3 months
+**Expected Beta**: 1.5 months  
+**Expected Production**: 2.5 months
 
 The project is on track for a successful launch. Major remaining work includes:
 1. Completing iOS UI (SwiftUI interfaces)
