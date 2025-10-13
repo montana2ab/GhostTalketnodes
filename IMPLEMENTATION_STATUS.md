@@ -62,19 +62,19 @@ This document tracks the implementation status of the GhostTalk decentralized me
 
 #### In Progress 🔄
 - [ ] Admin API (RBAC, node management)
-- [ ] APNs Notifier bridge
 - [ ] Proof-of-Work validation
 - [ ] mTLS between nodes
 - [x] Integration tests (onion router - 10 tests passing)
 - [ ] E2E tests
 
 #### Recently Completed ✅
+- [x] APNs Notifier bridge (8 tests passing)
 - [x] Rate limiting middleware (7 tests passing)
 - [x] RocksDB storage backend (with build tag support)
 
 **Lines of Code**: ~3,200 Go
 
-### ✅ iOS Client (GhostTalk) - 50% Complete
+### ✅ iOS Client (GhostTalk) - 80% Complete
 
 #### Implemented ✅
 - [x] Project structure (Swift Package Manager)
@@ -108,19 +108,22 @@ This document tracks the implementation status of the GhostTalk decentralized me
   - Node discovery
   - Health checks
 - [x] Package.swift dependencies configuration
+- [x] SwiftUI User Interface (20 views)
+  - Complete onboarding flow (6 views)
+  - Chat interface (5 views including message bubbles)
+  - Settings screens (5 views)
+  - App structure and navigation (4 views)
+  - ViewModels with Combine integration
+  - MVVM architecture pattern
+  - Dark mode support
 
 #### In Progress 🔄
 - [ ] Storage layer (SQLCipher)
 - [ ] PushHandler (APNs)
-- [ ] SwiftUI interfaces
-  - Onboarding flow
-  - Contacts list
-  - Chat view
-  - Settings
 - [ ] Unit tests
 - [ ] UI tests
 
-**Lines of Code**: ~2,800 Swift
+**Lines of Code**: ~8,000 Swift
 
 ### ✅ Infrastructure as Code - 40% Complete
 
@@ -238,7 +241,29 @@ PASS
 ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/middleware	0.154s
 ```
 
-**Total: 25 tests, 25 passing**
+#### APNs Notifier Tests (pkg/apns)
+```
+=== RUN   TestNewNotifier_InvalidConfig
+--- PASS: TestNewNotifier_InvalidConfig (0.00s)
+=== RUN   TestRegisterDevice
+--- PASS: TestRegisterDevice (0.00s)
+=== RUN   TestUnregisterDevice
+--- PASS: TestUnregisterDevice (0.00s)
+=== RUN   TestSendNotification_NoRegistration
+--- PASS: TestSendNotification_NoRegistration (0.00s)
+=== RUN   TestStats
+--- PASS: TestStats (0.00s)
+=== RUN   TestCleanup
+--- PASS: TestCleanup (0.00s)
+=== RUN   TestGetRegistration
+--- PASS: TestGetRegistration (0.00s)
+=== RUN   TestNotificationPayload
+--- PASS: TestNotificationPayload (0.00s)
+PASS
+ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/apns	0.003s
+```
+
+**Total: 33 tests, 33 passing**
 
 ### Build Status
 - ✅ Go server builds successfully
@@ -308,8 +333,8 @@ ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/middleware	0.154s
 5. ~~Add rate limiting middleware~~ ✅
 
 ### Short-term (Week 3-4)
-6. Complete iOS UI (Onboarding, Chat, Settings)
-7. Implement APNs notifier
+6. ~~Complete iOS UI (Onboarding, Chat, Settings)~~ ✅
+7. ~~Implement APNs notifier~~ ✅
 8. Add mTLS between nodes
 9. Complete E2E test suite
 10. Finish Terraform modules
@@ -375,14 +400,14 @@ The GhostTalk project has a solid foundation with:
 - ✅ CI/CD pipeline for automated testing and building
 - ✅ Integration tests for server onion router
 
-**Overall Progress**: ~60% complete  
+**Overall Progress**: ~75% complete  
 **Production Ready**: No (alpha stage)  
-**Expected Beta**: 2-3 months  
-**Expected Production**: 3-4 months
+**Expected Beta**: 1.5 months  
+**Expected Production**: 2.5 months
 
 The project is on track for a successful launch. Major remaining work includes:
-1. Completing iOS UI (SwiftUI interfaces)
-2. Adding storage layer (SQLCipher)
+1. Adding mTLS between nodes for secure inter-node communication
+2. Adding storage layer (SQLCipher) for iOS client
 3. Integration and E2E testing
 4. Production deployment and monitoring
 5. Security audit
