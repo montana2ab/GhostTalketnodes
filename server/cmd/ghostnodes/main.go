@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/common"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/directory"
+	"github.com/montana2ab/GhostTalketnodes/server/pkg/middleware"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/onion"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/swarm"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -61,7 +62,21 @@ func main() {
 	// Initialize components
 	onionRouter := onion.NewRouter(privateKey)
 	
-	storage := swarm.NewMemoryStorage() // Use RocksDB in production
+	// Initialize storage backend based on config
+	var storage swarm.Storage
+	switch config.Storage.Backend {
+	case "rocksdb":
+		var err error
+		storage, err = swarm.NewRocksDBStorage(config.Storage.Path)
+		if err != nil {
+			log.Fatalf("Failed to initialize RocksDB storage: %v", err)
+		}
+		log.Printf("Using RocksDB storage at %s", config.Storage.Path)
+	default: // "memory" or unspecified
+		storage = swarm.NewMemoryStorage()
+		log.Println("Using in-memory storage (not suitable for production)")
+	}
+	
 	swarmStore := swarm.NewStore(
 		storage,
 		config.BootstrapNodes,
@@ -85,11 +100,30 @@ func main() {
 
 	// Wait for shutdown signal
 	server.WaitForShutdown()
+	
+	// Cleanup storage
+	if err := storage.Close(); err != nil {
+		log.Printf("Error closing storage: %v", err)
+	}
 }
 
 func (s *Server) Start() error {
 	// Create router
 	r := mux.NewRouter()
+
+	// Apply rate limiting if enabled
+	var handler http.Handler = r
+	if s.config.RateLimit.Enabled {
+		rateLimiter := middleware.NewRateLimiter(
+			s.config.RateLimit.RequestsPerSecond,
+			s.config.RateLimit.Burst,
+		)
+		handler = rateLimiter.Middleware(r)
+		log.Printf("Rate limiting enabled: %d req/s with burst %d",
+			s.config.RateLimit.RequestsPerSecond,
+			s.config.RateLimit.Burst,
+		)
+	}
 
 	// API routes
 	api := r.PathPrefix("/v1").Subrouter()
@@ -123,7 +157,7 @@ func (s *Server) Start() error {
 
 	s.httpServer = &http.Server{
 		Addr:         s.config.ListenAddress,
-		Handler:      r,
+		Handler:      handler,
 		TLSConfig:    tlsConfig,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,

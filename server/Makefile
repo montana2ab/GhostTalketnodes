@@ -10,9 +10,17 @@ build:
 	@echo "Building $(BINARY_NAME)..."
 	go build -o bin/$(BINARY_NAME) -ldflags="-X main.Version=$(VERSION)" ./cmd/ghostnodes
 
+build-rocksdb:
+	@echo "Building $(BINARY_NAME) with RocksDB support..."
+	go build -tags rocksdb -o bin/$(BINARY_NAME)-rocksdb -ldflags="-X main.Version=$(VERSION)" ./cmd/ghostnodes
+
 test:
 	@echo "Running tests..."
 	go test -v -race -cover ./...
+
+test-rocksdb:
+	@echo "Running tests with RocksDB support..."
+	go test -v -race -cover -tags rocksdb ./...
 
 test-coverage:
 	@echo "Running tests with coverage..."
@@ -66,7 +74,9 @@ install:
 help:
 	@echo "Available targets:"
 	@echo "  build          - Build the binary"
+	@echo "  build-rocksdb  - Build with RocksDB support"
 	@echo "  test           - Run tests"
+	@echo "  test-rocksdb   - Run tests with RocksDB support"
 	@echo "  test-coverage  - Run tests with coverage report"
 	@echo "  lint           - Run linters"
 	@echo "  fmt            - Format code"

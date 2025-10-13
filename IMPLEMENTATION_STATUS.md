@@ -63,14 +63,16 @@ This document tracks the implementation status of the GhostTalk decentralized me
 #### In Progress 🔄
 - [ ] Admin API (RBAC, node management)
 - [ ] APNs Notifier bridge
-- [ ] Rate limiting middleware
 - [ ] Proof-of-Work validation
-- [ ] RocksDB integration (using memory storage currently)
 - [ ] mTLS between nodes
 - [x] Integration tests (onion router - 10 tests passing)
 - [ ] E2E tests
 
-**Lines of Code**: ~2,850 Go
+#### Recently Completed ✅
+- [x] Rate limiting middleware (7 tests passing)
+- [x] RocksDB storage backend (with build tag support)
+
+**Lines of Code**: ~3,200 Go
 
 ### ✅ iOS Client (GhostTalk) - 50% Complete
 
@@ -216,7 +218,27 @@ PASS
 ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/onion	0.104s
 ```
 
-**Total: 18 tests, 18 passing**
+#### Middleware Tests (pkg/middleware)
+```
+=== RUN   TestNewRateLimiter
+--- PASS: TestNewRateLimiter (0.00s)
+=== RUN   TestRateLimiter_GetLimiter
+--- PASS: TestRateLimiter_GetLimiter (0.00s)
+=== RUN   TestRateLimiter_Cleanup
+--- PASS: TestRateLimiter_Cleanup (0.00s)
+=== RUN   TestRateLimiter_Middleware
+--- PASS: TestRateLimiter_Middleware (0.00s)
+=== RUN   TestRateLimiter_MiddlewareDifferentIPs
+--- PASS: TestRateLimiter_MiddlewareDifferentIPs (0.00s)
+=== RUN   TestRateLimiter_MiddlewareWithRefill
+--- PASS: TestRateLimiter_MiddlewareWithRefill (0.15s)
+=== RUN   TestGetClientIP
+--- PASS: TestGetClientIP (0.00s)
+PASS
+ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/middleware	0.154s
+```
+
+**Total: 25 tests, 25 passing**
 
 ### Build Status
 - ✅ Go server builds successfully
@@ -282,8 +304,8 @@ ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/onion	0.104s
 1. ~~Complete iOS OnionClient implementation~~ ✅
 2. ~~Complete iOS ChatService~~ ✅
 3. ~~Add server integration tests~~ ✅
-4. Implement RocksDB storage backend
-5. Add rate limiting middleware
+4. ~~Implement RocksDB storage backend~~ ✅
+5. ~~Add rate limiting middleware~~ ✅
 
 ### Short-term (Week 3-4)
 6. Complete iOS UI (Onboarding, Chat, Settings)
@@ -320,6 +342,7 @@ ok  	github.com/montana2ab/GhostTalketnodes/server/pkg/onion	0.104s
 ### Test Coverage
 - Server Crypto: 100% (8/8 tests passing)
 - Server Onion Router: 100% (10/10 tests passing)
+- Server Middleware: 100% (7/7 tests passing)
 - iOS: 0% (tests pending)
 - Integration: Partial (onion router only)
 - E2E: 0% (pending)
@@ -352,7 +375,7 @@ The GhostTalk project has a solid foundation with:
 - ✅ CI/CD pipeline for automated testing and building
 - ✅ Integration tests for server onion router
 
-**Overall Progress**: ~55% complete  
+**Overall Progress**: ~60% complete  
 **Production Ready**: No (alpha stage)  
 **Expected Beta**: 2-3 months  
 **Expected Production**: 3-4 months
