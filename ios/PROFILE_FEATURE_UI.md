@@ -26,7 +26,7 @@
 ```
 
 **Elements:**
-- Circular avatar (50x50) with profile picture or placeholder
+- Circular avatar (50x50 points) with profile picture or placeholder
 - Display name in bold
 - Status message in smaller, secondary text
 - Right chevron indicating navigation
@@ -46,7 +46,7 @@
 │          │     👤     │            │
 │          │            │            │
 │          └────────────┘            │
-│           (100x100)                │
+│        (100x100 points)            │
 │                                     │
 ├─────────────────────────────────────┤
 │ Display Name                        │
@@ -66,7 +66,7 @@
 ```
 
 **Elements:**
-- Large circular avatar (100x100) centered
+- Large circular avatar (100x100 points) centered
 - Read-only display name
 - Read-only status message
 - Read-only Session ID (tappable to copy)
