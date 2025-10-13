@@ -41,29 +41,37 @@ ios/
 ├── GhostTalk/
 │   ├── Crypto/              # Cryptographic engine
 │   │   └── CryptoEngine.swift
-│   ├── Onion/               # Onion routing client
-│   │   ├── OnionClient.swift
-│   │   └── OnionPacketBuilder.swift
-│   ├── Storage/             # SQLCipher storage
-│   │   ├── Database.swift
-│   │   └── MessageStore.swift
-│   ├── Network/             # HTTP/2 transport
-│   │   ├── Transport.swift
-│   │   └── NetworkClient.swift
+│   │   ├── NetworkClient.swift
+│   │   └── OnionClient.swift
 │   ├── Services/            # Business logic
 │   │   ├── IdentityService.swift
-│   │   ├── ChatService.swift
-│   │   └── PushHandler.swift
-│   ├── UI/                  # SwiftUI views
-│   │   ├── OnboardingView.swift
-│   │   ├── ContactsView.swift
-│   │   ├── ChatView.swift
-│   │   └── SettingsView.swift
-│   └── Models/              # Data models
-│       ├── Message.swift
-│       ├── Contact.swift
-│       └── Identity.swift
-└── GhostTalkTests/          # Unit tests
+│   │   └── ChatService.swift
+│   └── UI/                  # SwiftUI views (20 views)
+│       ├── GhostTalkApp.swift       # App entry point
+│       ├── ContentView.swift        # Root view
+│       ├── Onboarding/              # 6 onboarding views
+│       │   ├── OnboardingView.swift
+│       │   ├── WelcomeView.swift
+│       │   ├── CreateOrImportView.swift
+│       │   ├── CreateIdentityView.swift
+│       │   ├── RecoveryPhraseView.swift
+│       │   └── ImportIdentityView.swift
+│       ├── Chat/                    # 5 chat views
+│       │   ├── MainTabView.swift
+│       │   ├── ConversationsListView.swift
+│       │   ├── ChatView.swift
+│       │   └── NewChatView.swift
+│       ├── Settings/                # 5 settings views
+│       │   ├── SettingsView.swift
+│       │   ├── RecoveryPhraseDisplayView.swift
+│       │   ├── PrivacySettingsView.swift
+│       │   ├── NetworkSettingsView.swift
+│       │   └── AboutView.swift
+│       └── Common/                  # ViewModels & Models
+│           ├── Models.swift
+│           ├── ConversationsViewModel.swift
+│           └── ChatViewModel.swift
+└── GhostTalkTests/          # Unit tests (TODO)
 ```
 
 ## Architecture
