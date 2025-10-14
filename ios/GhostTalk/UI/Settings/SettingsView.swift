@@ -9,6 +9,48 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
+                // Profile Section
+                Section {
+                    NavigationLink(destination: UserProfileView()) {
+                        HStack(spacing: 12) {
+                            // Avatar
+                            if let identity = appState.currentIdentity,
+                               let avatarData = identity.avatarData,
+                               let image = UIImage(data: avatarData) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Circle())
+                            } else {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(width: 50, height: 50)
+                                    
+                                    Image(systemName: "person.fill")
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            
+                            // Display Name and Status
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(appState.currentIdentity?.displayName ?? "User")
+                                    .font(.headline)
+                                
+                                if let status = appState.currentIdentity?.statusMessage, !status.isEmpty {
+                                    Text(status)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(1)
+                                }
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Profile")
+                }
+                
                 // Identity Section
                 Section {
                     if let identity = appState.currentIdentity {

@@ -108,14 +108,20 @@ This document tracks the implementation status of the GhostTalk decentralized me
   - Node discovery
   - Health checks
 - [x] Package.swift dependencies configuration
-- [x] SwiftUI User Interface (20 views)
+- [x] SwiftUI User Interface (21 views)
   - Complete onboarding flow (6 views)
   - Chat interface (5 views including message bubbles)
-  - Settings screens (5 views)
+  - Settings screens (6 views including profile)
   - App structure and navigation (4 views)
   - ViewModels with Combine integration
   - MVVM architecture pattern
   - Dark mode support
+- [x] User Profile Feature
+  - Display name customization
+  - Profile picture (avatar) support
+  - Status message
+  - Profile editor with image picker
+  - Profile preview in settings
 
 #### In Progress 🔄
 - [ ] Storage layer (SQLCipher)
@@ -123,7 +129,7 @@ This document tracks the implementation status of the GhostTalk decentralized me
 - [ ] Unit tests
 - [ ] UI tests
 
-**Lines of Code**: ~8,000 Swift
+**Lines of Code**: ~8,400 Swift
 
 ### ✅ Infrastructure as Code - 40% Complete
 

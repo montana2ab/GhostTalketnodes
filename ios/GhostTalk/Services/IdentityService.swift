@@ -37,7 +37,10 @@ class IdentityService {
             sessionID: sessionID,
             publicKey: identityKeys.publicKey,
             privateKey: identityKeys.privateKey,
-            recoveryPhrase: recoveryPhrase
+            recoveryPhrase: recoveryPhrase,
+            displayName: nil,
+            avatarData: nil,
+            statusMessage: nil
         )
     }
     
@@ -57,7 +60,10 @@ class IdentityService {
             sessionID: sessionID,
             publicKey: publicKey,
             privateKey: privateKeyData,
-            recoveryPhrase: nil
+            recoveryPhrase: nil,
+            displayName: nil,
+            avatarData: nil,
+            statusMessage: nil
         )
     }
     
@@ -94,7 +100,10 @@ class IdentityService {
             sessionID: sessionID,
             publicKey: publicKey,
             privateKey: privateKey,
-            recoveryPhrase: words
+            recoveryPhrase: words,
+            displayName: nil,
+            avatarData: nil,
+            statusMessage: nil
         )
     }
     
@@ -126,6 +135,57 @@ class IdentityService {
             throw IdentityError.noIdentity
         }
         return privateKey
+    }
+    
+    func getIdentity() throws -> Identity {
+        guard var identity = try loadIdentity() else {
+            throw IdentityError.noIdentity
+        }
+        
+        // Load profile data
+        identity.displayName = loadDisplayName()
+        identity.avatarData = loadAvatarData()
+        identity.statusMessage = loadStatusMessage()
+        
+        return identity
+    }
+    
+    // MARK: - Profile Management
+    
+    func updateDisplayName(_ displayName: String?) {
+        if let name = displayName {
+            UserDefaults.standard.set(name, forKey: "com.ghosttalk.profile.displayName")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "com.ghosttalk.profile.displayName")
+        }
+    }
+    
+    func updateAvatarData(_ avatarData: Data?) {
+        if let data = avatarData {
+            UserDefaults.standard.set(data, forKey: "com.ghosttalk.profile.avatarData")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "com.ghosttalk.profile.avatarData")
+        }
+    }
+    
+    func updateStatusMessage(_ statusMessage: String?) {
+        if let message = statusMessage {
+            UserDefaults.standard.set(message, forKey: "com.ghosttalk.profile.statusMessage")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "com.ghosttalk.profile.statusMessage")
+        }
+    }
+    
+    private func loadDisplayName() -> String? {
+        return UserDefaults.standard.string(forKey: "com.ghosttalk.profile.displayName")
+    }
+    
+    private func loadAvatarData() -> Data? {
+        return UserDefaults.standard.data(forKey: "com.ghosttalk.profile.avatarData")
+    }
+    
+    private func loadStatusMessage() -> String? {
+        return UserDefaults.standard.string(forKey: "com.ghosttalk.profile.statusMessage")
     }
     
     // MARK: - Private Helpers
@@ -226,6 +286,9 @@ struct Identity {
     let publicKey: Data
     let privateKey: Data
     let recoveryPhrase: [String]?
+    var displayName: String?
+    var avatarData: Data?
+    var statusMessage: String?
 }
 
 enum IdentityError: Error {

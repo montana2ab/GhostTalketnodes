@@ -58,4 +58,18 @@ class AppState: ObservableObject {
         self.currentIdentity = nil
         self.hasIdentity = false
     }
+    
+    func updateProfile(displayName: String?, avatarData: Data?, statusMessage: String?) {
+        identityService.updateDisplayName(displayName)
+        identityService.updateAvatarData(avatarData)
+        identityService.updateStatusMessage(statusMessage)
+        
+        // Reload identity to reflect changes
+        if var identity = currentIdentity {
+            identity.displayName = displayName
+            identity.avatarData = avatarData
+            identity.statusMessage = statusMessage
+            self.currentIdentity = identity
+        }
+    }
 }
