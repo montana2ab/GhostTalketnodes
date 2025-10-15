@@ -1,0 +1,535 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		010D70DDE72B71ED2458AA02 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3D74BA48E51BC144101703 /* ChatService.swift */; };
+		0EE5B68AA85A6DA2B565E092 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CBAC52B9C64D7DF425466A /* Security.framework */; };
+		13430D10BF6DCB2B7B480E7E /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F99D7AFC9699D57DDE2CFBEA /* Combine.framework */; };
+		157DC975441CBF75C1616060 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524149DB1B251461F6C5F22F /* UserProfileView.swift */; };
+		1E14A560BE2CD6D73557AB03 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D106A5472A8B8934E8AC8191 /* OnboardingView.swift */; };
+		2A834FBA61B3179958767412 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51F3E61D92688244755737C5 /* CryptoKit.framework */; };
+		320D4C9E3CD81875FB420368 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101D11AF434D71D86CFBEB4 /* ChatView.swift */; };
+		3726683D859332FA7545C56A /* CryptoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0E3B391FA392738ACB087A /* CryptoEngine.swift */; };
+		39C6FE1F4A13D1FE73B064D8 /* ConversationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51ABB31F67B36A5E8D1461D /* ConversationsViewModel.swift */; };
+		5053FDB9A98BBCA55A427D37 /* GhostTalkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8433B1774D89000AE65B73 /* GhostTalkApp.swift */; };
+		5C1080032B2FE2E4A77D4E91 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2560858368C5C32141053069 /* ContentView.swift */; };
+		5E6E070A35A5CEF3E6AF3DDB /* RecoveryPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101159835843FBDA8A93BB2 /* RecoveryPhraseView.swift */; };
+		5E77B9B1B484BB0340CFCEFC /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CFF742E9A05C52FA967E9 /* WelcomeView.swift */; };
+		617B56F3E934CBB1477BBEA2 /* RecoveryPhraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5752D69EBEA30B8F3BA916F /* RecoveryPhraseDisplayView.swift */; };
+		72BE88AA93DF61E864BE9349 /* ImportIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC8271AAB64E6539924EECB /* ImportIdentityView.swift */; };
+		80B84CEE7836CB9698194A7A /* CreateIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65764962BDE910A083782CB7 /* CreateIdentityView.swift */; };
+		85924E78CE5433D44E187062 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCD8D6344BE5CAD23E95FD48 /* Foundation.framework */; };
+		8C497BCEF6EA360DE557ACBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E938D0BC64D7AC2291E4E37C /* Foundation.framework */; };
+		9CB025BAE9FB80FD50876E08 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58DD3EF9C3AEE33D4FDEC19 /* AboutView.swift */; };
+		9F55401A2D5FFA1F257886D4 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442F9D37D43FC226446B4649 /* MainTabView.swift */; };
+		BC5A7E77530E0A532BA87B9E /* ConversationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C3CB6595FCBC94E7425710 /* ConversationsListView.swift */; };
+		CBADADD64F7E39593A033C94 /* OnionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B181CC787919E963A6079678 /* OnionClient.swift */; };
+		CEA337D0776DB6BE30AD8D02 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44D1C3D03C3CBCABD705143 /* SettingsView.swift */; };
+		D14E7D8B4E592A29573A2F0C /* CreateOrImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF8A995D3A6F4EB812C773E /* CreateOrImportView.swift */; };
+		D8A887872842B75E28F3871C /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BFDC372166050D5B184A7 /* PrivacySettingsView.swift */; };
+		E137C9C146673DF848F0937B /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74816C5B27F15EB87B02BA42 /* Models.swift */; };
+		E85BC6C498495DE036EDA5C5 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A277959030E958E4AAF2FD0 /* NetworkClient.swift */; };
+		EBEA2B36A90CAC7D7EF65B98 /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B158AD8EF891679A481080 /* NetworkSettingsView.swift */; };
+		EF27328BAC3C37883A09E3DB /* IdentityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85246EE172FDB0E59BFB4F7C /* IdentityService.swift */; };
+		F8CF59D9C38ACC9BF6024BB6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C043EF7B06F7A413451854 /* SwiftUI.framework */; };
+		F8E2625B0C15F8627D7DD680 /* NewChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D62F576032B059DA8192F52 /* NewChatView.swift */; };
+		FDFD00D1C912569FF34703EE /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F193F698DD381FA42A6AD6F9 /* ChatViewModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		032E961FE68BD0603A1EB4BF /* GhostTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GhostTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D62F576032B059DA8192F52 /* NewChatView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NewChatView.swift; path = GhostTalk/UI/Chat/NewChatView.swift; sourceTree = "<group>"; };
+		2560858368C5C32141053069 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = GhostTalk/UI/ContentView.swift; sourceTree = "<group>"; };
+		27C3CB6595FCBC94E7425710 /* ConversationsListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConversationsListView.swift; path = GhostTalk/UI/Chat/ConversationsListView.swift; sourceTree = "<group>"; };
+		3B8433B1774D89000AE65B73 /* GhostTalkApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GhostTalkApp.swift; path = GhostTalk/UI/GhostTalkApp.swift; sourceTree = "<group>"; };
+		3EC8271AAB64E6539924EECB /* ImportIdentityView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImportIdentityView.swift; path = GhostTalk/UI/Onboarding/ImportIdentityView.swift; sourceTree = "<group>"; };
+		442F9D37D43FC226446B4649 /* MainTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainTabView.swift; path = GhostTalk/UI/Chat/MainTabView.swift; sourceTree = "<group>"; };
+		5101D11AF434D71D86CFBEB4 /* ChatView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChatView.swift; path = GhostTalk/UI/Chat/ChatView.swift; sourceTree = "<group>"; };
+		51F3E61D92688244755737C5 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = System/Library/Frameworks/CryptoKit.framework; sourceTree = "<group>"; };
+		524149DB1B251461F6C5F22F /* UserProfileView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserProfileView.swift; path = GhostTalk/UI/Settings/UserProfileView.swift; sourceTree = "<group>"; };
+		54B158AD8EF891679A481080 /* NetworkSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkSettingsView.swift; path = GhostTalk/UI/Settings/NetworkSettingsView.swift; sourceTree = "<group>"; };
+		6101159835843FBDA8A93BB2 /* RecoveryPhraseView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecoveryPhraseView.swift; path = GhostTalk/UI/Onboarding/RecoveryPhraseView.swift; sourceTree = "<group>"; };
+		65764962BDE910A083782CB7 /* CreateIdentityView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateIdentityView.swift; path = GhostTalk/UI/Onboarding/CreateIdentityView.swift; sourceTree = "<group>"; };
+		6B0E3B391FA392738ACB087A /* CryptoEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CryptoEngine.swift; path = GhostTalk/Crypto/CryptoEngine.swift; sourceTree = "<group>"; };
+		6BD14722CE024AB1306D47B5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = GhostTalk/Info.plist; sourceTree = "<group>"; };
+		74816C5B27F15EB87B02BA42 /* Models.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Models.swift; path = GhostTalk/UI/Common/Models.swift; sourceTree = "<group>"; };
+		85246EE172FDB0E59BFB4F7C /* IdentityService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IdentityService.swift; path = GhostTalk/Services/IdentityService.swift; sourceTree = "<group>"; };
+		8A277959030E958E4AAF2FD0 /* NetworkClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkClient.swift; path = GhostTalk/Network/NetworkClient.swift; sourceTree = "<group>"; };
+		A0CBAC52B9C64D7DF425466A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = "<group>"; };
+		A44D1C3D03C3CBCABD705143 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = GhostTalk/UI/Settings/SettingsView.swift; sourceTree = "<group>"; };
+		A5752D69EBEA30B8F3BA916F /* RecoveryPhraseDisplayView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecoveryPhraseDisplayView.swift; path = GhostTalk/UI/Settings/RecoveryPhraseDisplayView.swift; sourceTree = "<group>"; };
+		B181CC787919E963A6079678 /* OnionClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnionClient.swift; path = GhostTalk/Network/OnionClient.swift; sourceTree = "<group>"; };
+		B50BFDC372166050D5B184A7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrivacySettingsView.swift; path = GhostTalk/UI/Settings/PrivacySettingsView.swift; sourceTree = "<group>"; };
+		C2C043EF7B06F7A413451854 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = "<group>"; };
+		C51ABB31F67B36A5E8D1461D /* ConversationsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConversationsViewModel.swift; path = GhostTalk/UI/Common/ConversationsViewModel.swift; sourceTree = "<group>"; };
+		CAF8A995D3A6F4EB812C773E /* CreateOrImportView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateOrImportView.swift; path = GhostTalk/UI/Onboarding/CreateOrImportView.swift; sourceTree = "<group>"; };
+		CD3D74BA48E51BC144101703 /* ChatService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChatService.swift; path = GhostTalk/Services/ChatService.swift; sourceTree = "<group>"; };
+		D05CFF742E9A05C52FA967E9 /* WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WelcomeView.swift; path = GhostTalk/UI/Onboarding/WelcomeView.swift; sourceTree = "<group>"; };
+		D106A5472A8B8934E8AC8191 /* OnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = GhostTalk/UI/Onboarding/OnboardingView.swift; sourceTree = "<group>"; };
+		D58DD3EF9C3AEE33D4FDEC19 /* AboutView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AboutView.swift; path = GhostTalk/UI/Settings/AboutView.swift; sourceTree = "<group>"; };
+		DCD8D6344BE5CAD23E95FD48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E938D0BC64D7AC2291E4E37C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = "<group>"; };
+		F193F698DD381FA42A6AD6F9 /* ChatViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChatViewModel.swift; path = GhostTalk/UI/Common/ChatViewModel.swift; sourceTree = "<group>"; };
+		F99D7AFC9699D57DDE2CFBEA /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E8556F421181B0046E593666 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85924E78CE5433D44E187062 /* Foundation.framework in Frameworks */,
+				F8CF59D9C38ACC9BF6024BB6 /* SwiftUI.framework in Frameworks */,
+				13430D10BF6DCB2B7B480E7E /* Combine.framework in Frameworks */,
+				8C497BCEF6EA360DE557ACBD /* Foundation.framework in Frameworks */,
+				0EE5B68AA85A6DA2B565E092 /* Security.framework in Frameworks */,
+				2A834FBA61B3179958767412 /* CryptoKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		074D09ADD674F62D25EF1B6C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8A277959030E958E4AAF2FD0 /* NetworkClient.swift */,
+				B181CC787919E963A6079678 /* OnionClient.swift */,
+			);
+			name = Network;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		0F0F963CB89709A67CCA2391 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2DBC7040838A3EF11CBAC97D /* iOS */,
+				C2C043EF7B06F7A413451854 /* SwiftUI.framework */,
+				F99D7AFC9699D57DDE2CFBEA /* Combine.framework */,
+				E938D0BC64D7AC2291E4E37C /* Foundation.framework */,
+				A0CBAC52B9C64D7DF425466A /* Security.framework */,
+				51F3E61D92688244755737C5 /* CryptoKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1F4D2A6CF20F2B9E85EF3382 /* GhostTalk */ = {
+			isa = PBXGroup;
+			children = (
+				A9E8A812357045B3E3BA089E /* Crypto */,
+				074D09ADD674F62D25EF1B6C /* Network */,
+				45AFD21DDC970D8720BB44ED /* Services */,
+				ED3AE1F02B391241A6F2CC48 /* UI */,
+				6BD14722CE024AB1306D47B5 /* Info.plist */,
+			);
+			name = GhostTalk;
+			path = GhostTalk;
+			sourceTree = "<group>";
+		};
+		2DBC7040838A3EF11CBAC97D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				DCD8D6344BE5CAD23E95FD48 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		32823A1C896AFDD0AC04DB8F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F193F698DD381FA42A6AD6F9 /* ChatViewModel.swift */,
+				C51ABB31F67B36A5E8D1461D /* ConversationsViewModel.swift */,
+				74816C5B27F15EB87B02BA42 /* Models.swift */,
+			);
+			name = Common;
+			path = Common;
+			sourceTree = "<group>";
+		};
+		45AFD21DDC970D8720BB44ED /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CD3D74BA48E51BC144101703 /* ChatService.swift */,
+				85246EE172FDB0E59BFB4F7C /* IdentityService.swift */,
+			);
+			name = Services;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4B9239D8A978F20A031CAB14 = {
+			isa = PBXGroup;
+			children = (
+				DE403FCB2C5A143DB9565D25 /* Products */,
+				0F0F963CB89709A67CCA2391 /* Frameworks */,
+				1F4D2A6CF20F2B9E85EF3382 /* GhostTalk */,
+			);
+			sourceTree = "<group>";
+		};
+		A17CBDB20E43C313AAA037AA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D58DD3EF9C3AEE33D4FDEC19 /* AboutView.swift */,
+				54B158AD8EF891679A481080 /* NetworkSettingsView.swift */,
+				B50BFDC372166050D5B184A7 /* PrivacySettingsView.swift */,
+				A5752D69EBEA30B8F3BA916F /* RecoveryPhraseDisplayView.swift */,
+				A44D1C3D03C3CBCABD705143 /* SettingsView.swift */,
+				524149DB1B251461F6C5F22F /* UserProfileView.swift */,
+			);
+			name = Settings;
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A9E8A812357045B3E3BA089E /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				6B0E3B391FA392738ACB087A /* CryptoEngine.swift */,
+			);
+			name = Crypto;
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		C77832A875457A5F730FC5A3 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				65764962BDE910A083782CB7 /* CreateIdentityView.swift */,
+				CAF8A995D3A6F4EB812C773E /* CreateOrImportView.swift */,
+				3EC8271AAB64E6539924EECB /* ImportIdentityView.swift */,
+				D106A5472A8B8934E8AC8191 /* OnboardingView.swift */,
+				6101159835843FBDA8A93BB2 /* RecoveryPhraseView.swift */,
+				D05CFF742E9A05C52FA967E9 /* WelcomeView.swift */,
+			);
+			name = Onboarding;
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		DC9BC3FD5EF1F88CC717A057 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				5101D11AF434D71D86CFBEB4 /* ChatView.swift */,
+				27C3CB6595FCBC94E7425710 /* ConversationsListView.swift */,
+				442F9D37D43FC226446B4649 /* MainTabView.swift */,
+				0D62F576032B059DA8192F52 /* NewChatView.swift */,
+			);
+			name = Chat;
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		DE403FCB2C5A143DB9565D25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				032E961FE68BD0603A1EB4BF /* GhostTalk.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED3AE1F02B391241A6F2CC48 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DC9BC3FD5EF1F88CC717A057 /* Chat */,
+				32823A1C896AFDD0AC04DB8F /* Common */,
+				C77832A875457A5F730FC5A3 /* Onboarding */,
+				A17CBDB20E43C313AAA037AA /* Settings */,
+				3B8433B1774D89000AE65B73 /* GhostTalkApp.swift */,
+				2560858368C5C32141053069 /* ContentView.swift */,
+			);
+			name = UI;
+			path = UI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4B23758D2512696B81708C46 /* GhostTalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C2413728041AA74D684E02E /* Build configuration list for PBXNativeTarget "GhostTalk" */;
+			buildPhases = (
+				2C26B1D7F4C0F0D6F41368A1 /* Sources */,
+				E8556F421181B0046E593666 /* Frameworks */,
+				A44B4145DEE693955AF99E16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GhostTalk;
+			productName = GhostTalk;
+			productReference = 032E961FE68BD0603A1EB4BF /* GhostTalk.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C263EBF7F1308B53A521997B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 7333DBDDE50A7621B072E52F /* Build configuration list for PBXProject "GhostTalk" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4B9239D8A978F20A031CAB14;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DE403FCB2C5A143DB9565D25 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4B23758D2512696B81708C46 /* GhostTalk */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A44B4145DEE693955AF99E16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2C26B1D7F4C0F0D6F41368A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3726683D859332FA7545C56A /* CryptoEngine.swift in Sources */,
+				E85BC6C498495DE036EDA5C5 /* NetworkClient.swift in Sources */,
+				CBADADD64F7E39593A033C94 /* OnionClient.swift in Sources */,
+				010D70DDE72B71ED2458AA02 /* ChatService.swift in Sources */,
+				EF27328BAC3C37883A09E3DB /* IdentityService.swift in Sources */,
+				5053FDB9A98BBCA55A427D37 /* GhostTalkApp.swift in Sources */,
+				5C1080032B2FE2E4A77D4E91 /* ContentView.swift in Sources */,
+				320D4C9E3CD81875FB420368 /* ChatView.swift in Sources */,
+				BC5A7E77530E0A532BA87B9E /* ConversationsListView.swift in Sources */,
+				9F55401A2D5FFA1F257886D4 /* MainTabView.swift in Sources */,
+				F8E2625B0C15F8627D7DD680 /* NewChatView.swift in Sources */,
+				FDFD00D1C912569FF34703EE /* ChatViewModel.swift in Sources */,
+				39C6FE1F4A13D1FE73B064D8 /* ConversationsViewModel.swift in Sources */,
+				E137C9C146673DF848F0937B /* Models.swift in Sources */,
+				80B84CEE7836CB9698194A7A /* CreateIdentityView.swift in Sources */,
+				D14E7D8B4E592A29573A2F0C /* CreateOrImportView.swift in Sources */,
+				72BE88AA93DF61E864BE9349 /* ImportIdentityView.swift in Sources */,
+				1E14A560BE2CD6D73557AB03 /* OnboardingView.swift in Sources */,
+				5E6E070A35A5CEF3E6AF3DDB /* RecoveryPhraseView.swift in Sources */,
+				5E77B9B1B484BB0340CFCEFC /* WelcomeView.swift in Sources */,
+				9CB025BAE9FB80FD50876E08 /* AboutView.swift in Sources */,
+				EBEA2B36A90CAC7D7EF65B98 /* NetworkSettingsView.swift in Sources */,
+				D8A887872842B75E28F3871C /* PrivacySettingsView.swift in Sources */,
+				617B56F3E934CBB1477BBEA2 /* RecoveryPhraseDisplayView.swift in Sources */,
+				CEA337D0776DB6BE30AD8D02 /* SettingsView.swift in Sources */,
+				157DC975441CBF75C1616060 /* UserProfileView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		050F2D8E8E027DF793673B28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_LANGUAGE = en;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = GhostTalk/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ghosttalk.app;
+				PRODUCT_NAME = GhostTalk;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6C3B46413A6C12970F681567 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_LANGUAGE = en;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = GhostTalk/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ghosttalk.app;
+				PRODUCT_NAME = GhostTalk;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7393BCD06A5318390BD0E138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		8FC310C4402AD144B58D3392 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7333DBDDE50A7621B072E52F /* Build configuration list for PBXProject "GhostTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FC310C4402AD144B58D3392 /* Debug */,
+				7393BCD06A5318390BD0E138 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C2413728041AA74D684E02E /* Build configuration list for PBXNativeTarget "GhostTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C3B46413A6C12970F681567 /* Release */,
+				050F2D8E8E027DF793673B28 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C263EBF7F1308B53A521997B /* Project object */;
+}
