@@ -13,8 +13,8 @@ Week 5-6 development focused on implementing the iOS Storage Layer with SQLite/S
 ### 1. iOS Storage Layer (SQLCipher Integration) ✅
 
 **Status**: COMPLETE  
-**Effort**: ~2,100 lines of Swift code  
-**Files**: 5 new files (4 implementation + 1 test + 1 documentation)
+**Effort**: ~1,690 lines of Swift code + 410 lines of documentation  
+**Files**: 5 new files (3 implementation + 1 test + 1 documentation)
 
 #### Implementation Details
 
@@ -225,8 +225,8 @@ return try storage.getMessages(forConversationWithSessionID: sessionID)
 - ✅ Statistics endpoint
 
 **Security Features:**
-- ✅ SQLCipher ready (dependency in Package.swift)
-- ✅ Prepared for encryption with master key
+- ✅ SQLCipher dependency added (Package.swift) - implementation pending
+- ✅ Architecture designed for future encryption
 - ✅ Secure file permissions
 - ✅ Thread-safe operations
 - ✅ SQL injection protection via prepared statements
@@ -544,14 +544,15 @@ Tests:
 
 ## Security Considerations
 
-### Current (SQLite)
-- Protected by iOS file system encryption
+### Current Implementation (SQLite)
+- Protected by iOS file system encryption (when device locked)
 - Sandboxed in app's documents directory
 - SQL injection protection via prepared statements
 - Thread-safe operations
+- **Note**: SQLCipher dependency added but not yet integrated
 
-### Future (SQLCipher)
-- Database-level encryption
+### Future Enhancement (SQLCipher)
+- Database-level encryption (implementation pending)
 - Key derived from user's identity key
 - Encrypted at rest (even if device jailbroken)
 - Independent of iOS file system encryption
