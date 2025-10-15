@@ -18,6 +18,7 @@ import (
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/common"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/directory"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/middleware"
+	"github.com/montana2ab/GhostTalketnodes/server/pkg/mtls"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/onion"
 	"github.com/montana2ab/GhostTalketnodes/server/pkg/swarm"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -30,11 +31,12 @@ var (
 )
 
 type Server struct {
-	config    *common.Config
-	router    *onion.Router
-	swarm     *swarm.Store
-	directory *directory.Service
+	config     *common.Config
+	router     *onion.Router
+	swarm      *swarm.Store
+	directory  *directory.Service
 	httpServer *http.Server
+	mtlsClient *mtls.Client
 }
 
 func main() {
@@ -86,11 +88,29 @@ func main() {
 	
 	directoryService := directory.NewService(privateKey)
 
+	// Initialize mTLS client if enabled
+	var mtlsClient *mtls.Client
+	if config.MTLS.Enabled {
+		mtlsConfig := &mtls.Config{
+			CAFile:   config.MTLS.CAFile,
+			CertFile: config.MTLS.CertFile,
+			KeyFile:  config.MTLS.KeyFile,
+			Timeout:  30 * time.Second,
+		}
+		var err error
+		mtlsClient, err = mtls.NewClient(mtlsConfig)
+		if err != nil {
+			log.Fatalf("Failed to initialize mTLS client: %v", err)
+		}
+		log.Println("mTLS enabled for inter-node communication")
+	}
+
 	server := &Server{
-		config:    config,
-		router:    onionRouter,
-		swarm:     swarmStore,
-		directory: directoryService,
+		config:     config,
+		router:     onionRouter,
+		swarm:      swarmStore,
+		directory:  directoryService,
+		mtlsClient: mtlsClient,
 	}
 
 	// Start HTTP server
@@ -100,6 +120,13 @@ func main() {
 
 	// Wait for shutdown signal
 	server.WaitForShutdown()
+	
+	// Cleanup mTLS client
+	if server.mtlsClient != nil {
+		if err := server.mtlsClient.Close(); err != nil {
+			log.Printf("Error closing mTLS client: %v", err)
+		}
+	}
 	
 	// Cleanup storage
 	if err := storage.Close(); err != nil {
@@ -226,8 +253,16 @@ func (s *Server) handleOnionPacket(w http.ResponseWriter, r *http.Request) {
 	switch decision.Action {
 	case onion.ActionForward:
 		// Forward to next hop
-		// TODO: Implement actual forwarding
-		log.Printf("Forwarding to %s", decision.NextAddress)
+		if s.mtlsClient != nil {
+			// Use mTLS for forwarding
+			if err := s.mtlsClient.ForwardPacket(decision.NextAddress, decision.Payload); err != nil {
+				log.Printf("Failed to forward packet: %v", err)
+				http.Error(w, "Failed to forward packet", http.StatusBadGateway)
+				return
+			}
+		} else {
+			log.Printf("mTLS not enabled, packet forwarding skipped to %s", decision.NextAddress)
+		}
 		w.WriteHeader(http.StatusAccepted)
 		
 	case onion.ActionDeliver:
