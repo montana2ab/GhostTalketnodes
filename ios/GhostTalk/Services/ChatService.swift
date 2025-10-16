@@ -8,6 +8,7 @@ class ChatService {
     private let identityService: IdentityService
     private let crypto: CryptoEngine
     private let networkClient: NetworkClient
+    private let storageManager: StorageManager?
     
     // Message queue and cache
     private var messageQueue: [QueuedMessage] = []
@@ -36,12 +37,14 @@ class ChatService {
         onionClient: OnionClient,
         identityService: IdentityService,
         crypto: CryptoEngine,
-        networkClient: NetworkClient
+        networkClient: NetworkClient,
+        storageManager: StorageManager? = nil
     ) {
         self.onionClient = onionClient
         self.identityService = identityService
         self.crypto = crypto
         self.networkClient = networkClient
+        self.storageManager = storageManager
         
         // Start queue processor
         startQueueProcessor()
@@ -95,6 +98,23 @@ class ChatService {
         // Notify observers
         messageStatusSubject.send(MessageStatus(messageID: messageID, status: .pending))
         
+        // Persist to storage if available
+        if let storage = storageManager {
+            do {
+                let conversation = try storage.getOrCreateConversation(withSessionID: recipientSessionID)
+                let uiMessage = convertToUIMessage(message)
+                try storage.saveMessage(
+                    uiMessage,
+                    conversationID: conversation.id,
+                    senderSessionID: message.senderSessionID,
+                    recipientSessionID: recipientSessionID
+                )
+            } catch {
+                // Log error but don't fail the send operation
+                print("Failed to persist message to storage: \(error)")
+            }
+        }
+        
         return messageID
     }
     
@@ -125,6 +145,22 @@ class ChatService {
                         if !isDuplicate {
                             newMessages.append(message)
                             messageReceivedSubject.send(message)
+                            
+                            // Persist to storage if available
+                            if let storage = storageManager {
+                                do {
+                                    let conversation = try storage.getOrCreateConversation(withSessionID: message.senderSessionID)
+                                    let uiMessage = convertToUIMessage(message)
+                                    try storage.saveMessage(
+                                        uiMessage,
+                                        conversationID: conversation.id,
+                                        senderSessionID: message.senderSessionID,
+                                        recipientSessionID: message.recipientSessionID
+                                    )
+                                } catch {
+                                    print("Failed to persist received message to storage: \(error)")
+                                }
+                            }
                         }
                     }
                 }
@@ -271,6 +307,43 @@ class ChatService {
         queueLock.unlock()
         
         messageStatusSubject.send(MessageStatus(messageID: messageID, status: status))
+        
+        // Update storage if available
+        if let storage = storageManager {
+            do {
+                let uiStatus = convertToUIMessageStatus(status)
+                try storage.updateMessageStatus(messageID, status: uiStatus)
+            } catch {
+                print("Failed to update message status in storage: \(error)")
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    /// Convert ChatService Message to UI Message
+    private func convertToUIMessage(_ message: Message) -> GhostTalk.Message {
+        return GhostTalk.Message(
+            id: message.id,
+            text: message.text,
+            timestamp: message.timestamp,
+            isOutgoing: message.senderSessionID != message.recipientSessionID,
+            status: convertToUIMessageStatus(message.status)
+        )
+    }
+    
+    /// Convert MessageDeliveryStatus to UI MessageStatus
+    private func convertToUIMessageStatus(_ status: MessageDeliveryStatus) -> GhostTalk.MessageStatus {
+        switch status {
+        case .pending:
+            return .sending
+        case .sent:
+            return .sent
+        case .delivered:
+            return .delivered
+        case .failed:
+            return .failed
+        }
     }
     
     // MARK: - Public API
@@ -284,6 +357,28 @@ class ChatService {
     
     /// Get all messages for a conversation
     func getMessages(with sessionID: String) -> [Message] {
+        // Try to get from storage first if available
+        if let storage = storageManager {
+            do {
+                let uiMessages = try storage.getMessages(forConversationWithSessionID: sessionID)
+                // Convert UI messages back to ChatService messages
+                return uiMessages.map { uiMsg in
+                    Message(
+                        id: uiMsg.id,
+                        text: uiMsg.text,
+                        senderSessionID: uiMsg.isOutgoing ? (try? identityService.getSessionID()) ?? "" : sessionID,
+                        recipientSessionID: uiMsg.isOutgoing ? sessionID : (try? identityService.getSessionID()) ?? "",
+                        timestamp: uiMsg.timestamp,
+                        status: convertFromUIMessageStatus(uiMsg.status)
+                    )
+                }
+            } catch {
+                print("Failed to get messages from storage: \(error)")
+                // Fall through to cache-based retrieval
+            }
+        }
+        
+        // Fallback to cache if storage unavailable or fails
         queueLock.lock()
         defer { queueLock.unlock() }
         
@@ -291,6 +386,20 @@ class ChatService {
         let received = receivedMessages.values.filter { $0.senderSessionID == sessionID }
         
         return (sent + received).sorted { $0.timestamp < $1.timestamp }
+    }
+    
+    /// Convert UI MessageStatus to MessageDeliveryStatus
+    private func convertFromUIMessageStatus(_ status: GhostTalk.MessageStatus) -> MessageDeliveryStatus {
+        switch status {
+        case .sending:
+            return .pending
+        case .sent:
+            return .sent
+        case .delivered:
+            return .delivered
+        case .failed:
+            return .failed
+        }
     }
     
     /// Clear message cache
