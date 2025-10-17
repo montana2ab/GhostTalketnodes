@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            ConversationsListView()
+            ConversationsListView(storageManager: appState.storageManager)
                 .tabItem {
                     Label("Chats", systemImage: "message.fill")
                 }

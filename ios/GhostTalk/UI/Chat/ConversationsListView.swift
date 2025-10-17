@@ -1,8 +1,13 @@
 import SwiftUI
 
 struct ConversationsListView: View {
-    @StateObject private var viewModel = ConversationsViewModel()
+    @EnvironmentObject var appState: AppState
+    @StateObject private var viewModel: ConversationsViewModel
     @State private var showingNewChat = false
+    
+    init(storageManager: StorageManager? = nil) {
+        _viewModel = StateObject(wrappedValue: ConversationsViewModel(storageManager: storageManager))
+    }
     
     var body: some View {
         NavigationView {
@@ -28,7 +33,7 @@ struct ConversationsListView: View {
                     // Conversations list
                     List {
                         ForEach(viewModel.conversations) { conversation in
-                            NavigationLink(destination: ChatView(conversation: conversation)) {
+                            NavigationLink(destination: ChatView(conversation: conversation, storageManager: appState.storageManager)) {
                                 ConversationRow(conversation: conversation)
                             }
                         }

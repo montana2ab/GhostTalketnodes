@@ -6,9 +6,9 @@ struct ChatView: View {
     @State private var messageText = ""
     @FocusState private var isInputFocused: Bool
     
-    init(conversation: Conversation) {
+    init(conversation: Conversation, storageManager: StorageManager? = nil) {
         self.conversation = conversation
-        _viewModel = StateObject(wrappedValue: ChatViewModel(conversation: conversation))
+        _viewModel = StateObject(wrappedValue: ChatViewModel(conversation: conversation, storageManager: storageManager))
     }
     
     var body: some View {
