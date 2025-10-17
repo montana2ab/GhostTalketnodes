@@ -6,19 +6,29 @@ class ChatViewModel: ObservableObject {
     @Published var isSending: Bool = false
     
     let conversation: Conversation
-    private let chatService: ChatService
+    private let storageManager: StorageManager?
     private var cancellables = Set<AnyCancellable>()
     
-    init(conversation: Conversation) {
+    init(conversation: Conversation, storageManager: StorageManager? = nil) {
         self.conversation = conversation
-        self.chatService = ChatService()
+        self.storageManager = storageManager
         setupSubscriptions()
+        loadMessages()
     }
     
     func loadMessages() {
-        // TODO: Load messages from storage
-        // For now, using sample data for UI demonstration
-        messages = []
+        // Load messages from storage if available
+        if let storageManager = storageManager {
+            do {
+                messages = try storageManager.getMessages(forConversationWithSessionID: conversation.sessionID)
+            } catch {
+                print("Failed to load messages from storage: \(error)")
+                messages = []
+            }
+        } else {
+            // Fallback to empty list if storage not available
+            messages = []
+        }
     }
     
     func sendMessage(text: String) {
@@ -28,57 +38,58 @@ class ChatViewModel: ObservableObject {
             status: .sending
         )
         
+        // Add to local messages list
         messages.append(message)
         isSending = true
         
-        // Send via ChatService
-        Task {
+        // Save to storage if available
+        if let storageManager = storageManager {
             do {
-                try await chatService.sendMessage(text: text, to: conversation.sessionID)
+                // Get or create conversation in storage
+                let storedConversation = try storageManager.getOrCreateConversation(withSessionID: conversation.sessionID)
                 
-                await MainActor.run {
-                    if let index = messages.firstIndex(where: { $0.id == message.id }) {
-                        messages[index].status = .sent
-                    }
-                    isSending = false
-                }
+                // Get current user's session ID (we'll use empty string as placeholder)
+                let senderSessionID = "" // TODO: Get from IdentityService
+                
+                // Save message to storage
+                try storageManager.saveMessage(
+                    message,
+                    conversationID: storedConversation.id,
+                    senderSessionID: senderSessionID,
+                    recipientSessionID: conversation.sessionID
+                )
             } catch {
-                await MainActor.run {
-                    if let index = messages.firstIndex(where: { $0.id == message.id }) {
-                        messages[index].status = .failed
-                    }
-                    isSending = false
+                print("Failed to save message to storage: \(error)")
+            }
+        }
+        
+        // TODO: Integrate with ChatService for actual sending
+        // For now, simulate sending with a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            
+            if let index = self.messages.firstIndex(where: { $0.id == message.id }) {
+                self.messages[index].status = .sent
+                
+                // Update status in storage if available
+                if let storageManager = self.storageManager {
+                    try? storageManager.updateMessageStatus(message.id, status: .sent)
                 }
             }
+            self.isSending = false
         }
     }
     
     private func setupSubscriptions() {
-        // Subscribe to incoming messages
-        chatService.messageReceived
+        // Subscribe to new messages from storage
+        storageManager?.messageAdded
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] receivedMessage in
+            .sink { [weak self] newMessage in
                 guard let self = self else { return }
-                // Only add messages for this conversation
-                if receivedMessage.sender == self.conversation.sessionID {
-                    let message = Message(
-                        text: receivedMessage.content,
-                        timestamp: receivedMessage.timestamp,
-                        isOutgoing: false,
-                        status: .delivered
-                    )
-                    self.messages.append(message)
-                }
-            }
-            .store(in: &cancellables)
-        
-        // Subscribe to message status updates
-        chatService.messageStatusChanged
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] update in
-                guard let self = self else { return }
-                if let index = self.messages.firstIndex(where: { $0.id == update.messageID }) {
-                    self.messages[index].status = update.status
+                
+                // Only add messages for this conversation that aren't already in the list
+                if !self.messages.contains(where: { $0.id == newMessage.id }) {
+                    self.messages.append(newMessage)
                 }
             }
             .store(in: &cancellables)

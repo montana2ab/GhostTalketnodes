@@ -19,9 +19,19 @@ class AppState: ObservableObject {
     @Published var isLoading: Bool = false
     
     private let identityService: IdentityService
+    let storageManager: StorageManager?
     
     init() {
         self.identityService = IdentityService()
+        
+        // Initialize storage manager (gracefully handle failure)
+        do {
+            self.storageManager = try StorageManager()
+        } catch {
+            print("Failed to initialize StorageManager: \(error)")
+            self.storageManager = nil
+        }
+        
         checkForExistingIdentity()
     }
     

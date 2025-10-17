@@ -4,21 +4,84 @@ import Combine
 class ConversationsViewModel: ObservableObject {
     @Published var conversations: [Conversation] = []
     
-    private let chatService: ChatService
+    private let storageManager: StorageManager?
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        self.chatService = ChatService()
+    init(storageManager: StorageManager? = nil) {
+        self.storageManager = storageManager
+        setupSubscriptions()
         loadConversations()
     }
     
     func loadConversations() {
-        // TODO: Load conversations from storage
-        // For now, using sample data for UI demonstration
-        conversations = []
+        // Load conversations from storage if available
+        if let storageManager = storageManager {
+            do {
+                conversations = try storageManager.getAllConversations()
+            } catch {
+                print("Failed to load conversations from storage: \(error)")
+                conversations = []
+            }
+        } else {
+            // Fallback to empty list if storage not available
+            conversations = []
+        }
     }
     
     func createConversation(with sessionID: String) {
+        // Try to create in storage first
+        if let storageManager = storageManager {
+            do {
+                let conversation = try storageManager.getOrCreateConversation(withSessionID: sessionID)
+                // Add to local list if not already present
+                if !conversations.contains(where: { $0.id == conversation.id }) {
+                    conversations.append(conversation)
+                }
+            } catch {
+                print("Failed to create conversation in storage: \(error)")
+                // Fallback to in-memory creation
+                createInMemoryConversation(with: sessionID)
+            }
+        } else {
+            // Fallback to in-memory creation if storage not available
+            createInMemoryConversation(with: sessionID)
+        }
+    }
+    
+    func deleteConversation(_ conversation: Conversation) {
+        // Delete from storage if available
+        if let storageManager = storageManager {
+            do {
+                try storageManager.deleteConversation(sessionID: conversation.sessionID)
+            } catch {
+                print("Failed to delete conversation from storage: \(error)")
+            }
+        }
+        
+        // Always remove from local list
+        conversations.removeAll { $0.id == conversation.id }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupSubscriptions() {
+        // Subscribe to conversation updates from storage
+        storageManager?.conversationUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedConversation in
+                guard let self = self else { return }
+                
+                // Update existing conversation or add new one
+                if let index = self.conversations.firstIndex(where: { $0.id == updatedConversation.id }) {
+                    self.conversations[index] = updatedConversation
+                } else {
+                    self.conversations.append(updatedConversation)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func createInMemoryConversation(with sessionID: String) {
         let newConversation = Conversation(
             id: UUID().uuidString,
             sessionID: sessionID,
@@ -28,10 +91,6 @@ class ConversationsViewModel: ObservableObject {
         )
         
         conversations.append(newConversation)
-    }
-    
-    func deleteConversation(_ conversation: Conversation) {
-        conversations.removeAll { $0.id == conversation.id }
     }
     
     private func formatDisplayName(sessionID: String) -> String {
