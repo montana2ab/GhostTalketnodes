@@ -7,11 +7,13 @@ class ChatViewModel: ObservableObject {
     
     let conversation: Conversation
     private let storageManager: StorageManager?
+    private let identityService: IdentityService?
     private var cancellables = Set<AnyCancellable>()
     
-    init(conversation: Conversation, storageManager: StorageManager? = nil) {
+    init(conversation: Conversation, storageManager: StorageManager? = nil, identityService: IdentityService? = nil) {
         self.conversation = conversation
         self.storageManager = storageManager
+        self.identityService = identityService
         setupSubscriptions()
         loadMessages()
     }
@@ -48,8 +50,8 @@ class ChatViewModel: ObservableObject {
                 // Get or create conversation in storage
                 let storedConversation = try storageManager.getOrCreateConversation(withSessionID: conversation.sessionID)
                 
-                // Get current user's session ID (we'll use empty string as placeholder)
-                let senderSessionID = "" // TODO: Get from IdentityService
+                // Get current user's session ID from IdentityService
+                let senderSessionID = try identityService?.getSessionID() ?? ""
                 
                 // Save message to storage
                 try storageManager.saveMessage(
@@ -63,7 +65,9 @@ class ChatViewModel: ObservableObject {
             }
         }
         
-        // TODO: Integrate with ChatService for actual sending
+        // Note: ChatService integration requires OnionClient, NetworkClient, and CryptoEngine
+        // which are not available in this ViewModel. For actual message sending, this should
+        // be handled by a separate service layer that ChatViewModel can delegate to.
         // For now, simulate sending with a delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }

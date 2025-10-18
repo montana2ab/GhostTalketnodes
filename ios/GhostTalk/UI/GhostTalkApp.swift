@@ -18,7 +18,7 @@ class AppState: ObservableObject {
     @Published var currentIdentity: Identity?
     @Published var isLoading: Bool = false
     
-    private let identityService: IdentityService
+    let identityService: IdentityService
     let storageManager: StorageManager?
     
     init() {
