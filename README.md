@@ -301,11 +301,11 @@ We aim to respond within 48 hours and will keep you updated on the fix progress.
 
 ## 👥 Team
 
-- **Architecture**: [Your Name]
-- **iOS Development**: [Your Name]
-- **Backend Development**: [Your Name]
-- **DevOps**: [Your Name]
-- **Security**: [Your Name]
+- **Architecture**: 
+- **iOS Development**: 
+- **Backend Development**: 
+- **DevOps**: 
+- **Security**: 
 
 ## 🙏 Acknowledgments
 
