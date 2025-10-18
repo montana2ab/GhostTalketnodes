@@ -33,7 +33,11 @@ struct ConversationsListView: View {
                     // Conversations list
                     List {
                         ForEach(viewModel.conversations) { conversation in
-                            NavigationLink(destination: ChatView(conversation: conversation, storageManager: appState.storageManager)) {
+                            NavigationLink(destination: ChatView(
+                                conversation: conversation,
+                                storageManager: appState.storageManager,
+                                identityService: appState.identityService
+                            )) {
                                 ConversationRow(conversation: conversation)
                             }
                         }

@@ -1,9 +1,14 @@
 package swarm
 
 import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+	"sort"
 	"sync"
 	"time"
 
@@ -16,6 +21,7 @@ type Store struct {
 	replicaPeers []string
 	replicaCount int
 	ttl          time.Duration
+	httpClient   *http.Client
 	
 	// Stats
 	messagesStored   uint64
@@ -41,6 +47,14 @@ func NewStore(storage Storage, replicaPeers []string, replicaCount int, ttlDays 
 		replicaPeers: replicaPeers,
 		replicaCount: replicaCount,
 		ttl:          time.Duration(ttlDays) * 24 * time.Hour,
+		httpClient: &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				MaxIdleConns:        100,
+				MaxIdleConnsPerHost: 10,
+				IdleConnTimeout:     90 * time.Second,
+			},
+		},
 	}
 }
 
@@ -192,41 +206,136 @@ func (s *Store) sessionPrefix(sessionID string) string {
 
 // replicateToPeers replicates message to peer nodes
 func (s *Store) replicateToPeers(msg *common.Message) {
-	// TODO: Implement actual network replication
-	// For now, this is a placeholder
-	
-	// Select k peers for replication
+	// Select k peers for replication using consistent hashing
 	peers := s.selectReplicationPeers(msg.DestinationID)
 	
+	// Serialize message for replication
+	data, err := json.Marshal(msg)
+	if err != nil {
+		// Log error but don't fail the operation
+		return
+	}
+	
+	// Replicate to each peer
 	for _, peer := range peers {
-		// Send to peer (HTTP POST)
-		_ = peer // Use peer to send replication request
-		// Example: POST https://peer/v1/swarm/replicate
+		go func(peerAddr string) {
+			url := fmt.Sprintf("https://%s/v1/swarm/replicate", peerAddr)
+			
+			// Create replication request
+			req, err := http.NewRequest("POST", url, bytes.NewReader(data))
+			if err != nil {
+				return
+			}
+			req.Header.Set("Content-Type", "application/json")
+			
+			// Send replication request
+			resp, err := s.httpClient.Do(req)
+			if err != nil {
+				// Log error but continue with other peers
+				return
+			}
+			defer resp.Body.Close()
+			
+			// Check response status
+			if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+				// Log warning but continue
+				return
+			}
+		}(peer)
 	}
 }
 
 // deleteFromPeers deletes message from replica nodes
 func (s *Store) deleteFromPeers(sessionID, messageID string) {
-	// TODO: Implement actual network deletion
+	// Select same peers that were used for replication
 	peers := s.selectReplicationPeers(sessionID)
 	
+	// Delete from each peer
 	for _, peer := range peers {
-		_ = peer // Send delete request
-		// Example: DELETE https://peer/v1/swarm/messages/{sessionID}/{messageID}
+		go func(peerAddr string) {
+			url := fmt.Sprintf("https://%s/v1/swarm/messages/%s/%s", peerAddr, sessionID, messageID)
+			
+			// Create delete request
+			req, err := http.NewRequest("DELETE", url, nil)
+			if err != nil {
+				return
+			}
+			
+			// Send delete request
+			resp, err := s.httpClient.Do(req)
+			if err != nil {
+				// Log error but continue with other peers
+				return
+			}
+			defer resp.Body.Close()
+			
+			// Check response status (200 OK or 404 Not Found are both acceptable)
+			if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNotFound {
+				// Log warning but continue
+				return
+			}
+		}(peer)
 	}
 }
 
 // selectReplicationPeers selects k peers for replication using consistent hashing
 func (s *Store) selectReplicationPeers(sessionID string) []string {
-	// TODO: Implement consistent hashing
-	// For now, return first k peers
+	if len(s.replicaPeers) == 0 {
+		return []string{}
+	}
 	
 	k := s.replicaCount
 	if k > len(s.replicaPeers) {
 		k = len(s.replicaPeers)
 	}
 	
-	return s.replicaPeers[:k]
+	// Use consistent hashing to select peers
+	// Hash the session ID to get a starting point on the ring
+	hash := hashString(sessionID)
+	
+	// Create a sorted list of peers with their hash values
+	type peerHash struct {
+		peer string
+		hash uint64
+	}
+	
+	peerHashes := make([]peerHash, len(s.replicaPeers))
+	for i, peer := range s.replicaPeers {
+		peerHashes[i] = peerHash{
+			peer: peer,
+			hash: hashString(peer),
+		}
+	}
+	
+	// Sort by hash value
+	sort.Slice(peerHashes, func(i, j int) bool {
+		return peerHashes[i].hash < peerHashes[j].hash
+	})
+	
+	// Find the starting position on the ring
+	startIdx := 0
+	for i, ph := range peerHashes {
+		if ph.hash >= hash {
+			startIdx = i
+			break
+		}
+	}
+	
+	// Select k peers starting from that position (wrapping around)
+	selected := make([]string, 0, k)
+	for i := 0; i < k; i++ {
+		idx := (startIdx + i) % len(peerHashes)
+		selected = append(selected, peerHashes[idx].peer)
+	}
+	
+	return selected
+}
+
+// hashString computes a consistent hash of a string
+func hashString(s string) uint64 {
+	h := sha256.Sum256([]byte(s))
+	// Use first 8 bytes as uint64
+	return binary.BigEndian.Uint64(h[:8])
 }
 
 // Stats contains store statistics
