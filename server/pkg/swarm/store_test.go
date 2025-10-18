@@ -323,9 +323,15 @@ func TestMemoryStorage(t *testing.T) {
 	}
 
 	// Test List
-	storage.Store("prefix/key1", []byte("value1"))
-	storage.Store("prefix/key2", []byte("value2"))
-	storage.Store("other/key3", []byte("value3"))
+	if err := storage.Store("prefix/key1", []byte("value1")); err != nil {
+		t.Fatalf("Failed to store prefix/key1: %v", err)
+	}
+	if err := storage.Store("prefix/key2", []byte("value2")); err != nil {
+		t.Fatalf("Failed to store prefix/key2: %v", err)
+	}
+	if err := storage.Store("other/key3", []byte("value3")); err != nil {
+		t.Fatalf("Failed to store other/key3: %v", err)
+	}
 
 	keys, err := storage.List("prefix/")
 	if err != nil {
