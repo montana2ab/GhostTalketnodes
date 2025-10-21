@@ -133,10 +133,12 @@ func ratchetEncrypt(message: Data, state: inout RatchetState) throws -> Encrypte
 ### Documentation
 
 - Use Markdown for all documentation
+- Follow the [Documentation Guidelines](DOCUMENTATION_GUIDELINES.md)
 - Keep README files up to date
 - Include code examples where appropriate
 - Explain complex algorithms
 - Document security considerations
+- Update documentation in the same PR as code changes
 
 ## Testing
 

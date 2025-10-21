@@ -46,10 +46,12 @@
 
 ## 📚 Documentation
 
+- **[Documentation Index](DOCUMENTATION_INDEX.md)**: Complete navigation guide to all documentation
 - **[Architecture Overview](ARCHITECTURE.md)**: Complete system design
 - **[Packet Format Specification](PACKET_FORMAT.md)**: Sphinx-like onion packet format
 - **[Deployment Playbook](DEPLOYMENT.md)**: Production deployment guide (5+ nodes)
 - **[Security Baseline](SECURITY.md)**: Threat model, controls, test results
+- **[Documentation Guidelines](DOCUMENTATION_GUIDELINES.md)**: How to write documentation
 
 ## 🚀 Quick Start
 
