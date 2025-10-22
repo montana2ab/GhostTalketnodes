@@ -20,9 +20,15 @@ class AppState: ObservableObject {
     
     let identityService: IdentityService
     let storageManager: StorageManager?
+    let chatService: ChatService?
+    let networkClient: NetworkClient
+    let crypto: CryptoEngine
+    let onionClient: OnionClient
     
     init() {
         self.identityService = IdentityService()
+        self.crypto = CryptoEngine()
+        self.networkClient = NetworkClient()
         
         // Initialize storage manager (gracefully handle failure)
         do {
@@ -31,6 +37,18 @@ class AppState: ObservableObject {
             print("Failed to initialize StorageManager: \(error)")
             self.storageManager = nil
         }
+        
+        // Initialize OnionClient with crypto and network client
+        self.onionClient = OnionClient(crypto: crypto, networkClient: networkClient)
+        
+        // Initialize ChatService with all dependencies
+        self.chatService = ChatService(
+            onionClient: onionClient,
+            identityService: identityService,
+            crypto: crypto,
+            networkClient: networkClient,
+            storageManager: storageManager
+        )
         
         checkForExistingIdentity()
     }
