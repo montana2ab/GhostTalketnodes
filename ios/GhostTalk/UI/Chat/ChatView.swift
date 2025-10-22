@@ -7,12 +7,14 @@ struct ChatView: View {
     @FocusState private var isInputFocused: Bool
     @EnvironmentObject var appState: AppState
     
-    init(conversation: Conversation, storageManager: StorageManager? = nil, identityService: IdentityService? = nil) {
+    init(conversation: Conversation, storageManager: StorageManager? = nil, identityService: IdentityService? = nil, chatService: ChatService? = nil, networkClient: NetworkClient? = nil) {
         self.conversation = conversation
         _viewModel = StateObject(wrappedValue: ChatViewModel(
             conversation: conversation,
             storageManager: storageManager,
-            identityService: identityService
+            identityService: identityService,
+            chatService: chatService,
+            networkClient: networkClient
         ))
     }
     

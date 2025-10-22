@@ -36,7 +36,9 @@ struct ConversationsListView: View {
                             NavigationLink(destination: ChatView(
                                 conversation: conversation,
                                 storageManager: appState.storageManager,
-                                identityService: appState.identityService
+                                identityService: appState.identityService,
+                                chatService: appState.chatService,
+                                networkClient: appState.networkClient
                             )) {
                                 ConversationRow(conversation: conversation)
                             }
