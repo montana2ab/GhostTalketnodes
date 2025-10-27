@@ -50,6 +50,7 @@
 - **[Architecture Overview](ARCHITECTURE.md)**: Complete system design
 - **[Packet Format Specification](PACKET_FORMAT.md)**: Sphinx-like onion packet format
 - **[Deployment Playbook](DEPLOYMENT.md)**: Production deployment guide (5+ nodes)
+- **[Local Test Network](deploy/docker/README.md)**: Docker Compose 3-node setup for testing
 - **[Security Baseline](SECURITY.md)**: Threat model, controls, test results
 - **[Documentation Guidelines](DOCUMENTATION_GUIDELINES.md)**: How to write documentation
 
@@ -190,12 +191,17 @@ make lint           # Run linters
 ```bash
 # Start 3-node local network
 cd deploy/docker
-docker-compose up -d
+./scripts/setup.sh      # First time only: generates keys/certs
+docker compose up -d    # Or: docker-compose up -d
 
 # Check node health
 curl http://localhost:9001/health
 curl http://localhost:9002/health
 curl http://localhost:9003/health
+
+# View monitoring
+# Prometheus: http://localhost:9090
+# Grafana: http://localhost:3000 (admin/admin)
 ```
 
 ## 🚢 Deployment
