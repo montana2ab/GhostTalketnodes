@@ -35,8 +35,12 @@ for node in node1 node2 node3; do
     if [ -f "$KEY_DIR/$node.key" ]; then
         echo "  - $node.key already exists, skipping"
     else
-        # Generate Ed25519 private key (32 bytes)
-        openssl rand -hex 32 > "$KEY_DIR/$node.key"
+        # Generate Ed25519 private key using OpenSSL
+        # Note: For production, use the actual GhostNodes key generation utility
+        openssl genpkey -algorithm Ed25519 -out "$KEY_DIR/$node.key" 2>/dev/null || {
+            # Fallback to random hex for compatibility
+            openssl rand -hex 32 > "$KEY_DIR/$node.key"
+        }
         echo "  - Generated $node.key"
     fi
 done
@@ -63,8 +67,10 @@ for node in node1 node2 node3; do
     CERT_DIR="$NODES_DIR/$node/certs"
     mkdir -p "$CERT_DIR"
     
-    # Copy CA cert to all nodes
-    cp "$NODES_DIR/node1/certs/ca.crt" "$CERT_DIR/" 2>/dev/null || true
+    # Copy CA cert to all nodes (skip if same directory)
+    if [ -f "$NODES_DIR/node1/certs/ca.crt" ] && [ "$node" != "node1" ]; then
+        cp "$NODES_DIR/node1/certs/ca.crt" "$CERT_DIR/" 
+    fi
     
     if [ ! -f "$CERT_DIR/$node.key" ]; then
         echo "  - Generating certificate for $node..."
