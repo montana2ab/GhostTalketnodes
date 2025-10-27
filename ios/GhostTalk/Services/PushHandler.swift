@@ -9,6 +9,7 @@
 import Foundation
 import UserNotifications
 import Combine
+import UIKit
 
 /// Handles push notification registration, delivery, and processing
 public class PushHandler: NSObject {
@@ -18,6 +19,7 @@ public class PushHandler: NSObject {
     private let networkClient: NetworkClient
     private let identityService: IdentityService
     private let chatService: ChatService?
+    private let registrationBaseURL: URL
     
     /// Current device token (hex string)
     private var deviceToken: String?
@@ -37,12 +39,15 @@ public class PushHandler: NSObject {
     ///   - networkClient: Network client for API calls
     ///   - identityService: Identity service for session ID
     ///   - chatService: Optional chat service for message fetching
+    ///   - registrationBaseURL: Base URL for push notification registration (defaults to directory service)
     public init(networkClient: NetworkClient, 
                 identityService: IdentityService,
-                chatService: ChatService? = nil) {
+                chatService: ChatService? = nil,
+                registrationBaseURL: URL? = nil) {
         self.networkClient = networkClient
         self.identityService = identityService
         self.chatService = chatService
+        self.registrationBaseURL = registrationBaseURL ?? URL(string: "https://directory.ghosttalk.network")!
         super.init()
     }
     
@@ -104,10 +109,6 @@ public class PushHandler: NSObject {
         
         Task {
             do {
-                // Get directory service URL (use first node as proxy)
-                // In production, this should be a dedicated registration endpoint
-                let directoryURL = URL(string: "https://directory.ghosttalk.network")!
-                
                 // Prepare registration request
                 let registrationData: [String: Any] = [
                     "session_id": sessionID,
@@ -120,10 +121,12 @@ public class PushHandler: NSObject {
                 }
                 
                 // Send registration to server
-                var request = URLRequest(url: directoryURL.appendingPathComponent("/apns/register"))
+                let registerURL = registrationBaseURL.appendingPathComponent("/apns/register")
+                var request = URLRequest(url: registerURL)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.httpBody = jsonData
+                request.timeoutInterval = 30
                 
                 let (data, response) = try await URLSession.shared.data(for: request)
                 
@@ -156,8 +159,6 @@ public class PushHandler: NSObject {
         
         Task {
             do {
-                let directoryURL = URL(string: "https://directory.ghosttalk.network")!
-                
                 let unregisterData: [String: Any] = [
                     "session_id": sessionID
                 ]
@@ -167,10 +168,12 @@ public class PushHandler: NSObject {
                     return
                 }
                 
-                var request = URLRequest(url: directoryURL.appendingPathComponent("/apns/unregister"))
+                let unregisterURL = registrationBaseURL.appendingPathComponent("/apns/unregister")
+                var request = URLRequest(url: unregisterURL)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.httpBody = jsonData
+                request.timeoutInterval = 30
                 
                 let (_, response) = try await URLSession.shared.data(for: request)
                 
@@ -348,9 +351,3 @@ public struct PushNotificationData {
     public let encrypted: Bool
     public let hasAttachment: Bool
 }
-
-// MARK: - UIApplication Extension (for UIApplication.shared access)
-
-#if canImport(UIKit)
-import UIKit
-#endif
