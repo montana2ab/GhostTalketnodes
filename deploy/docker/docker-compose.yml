@@ -1,0 +1,150 @@
+version: '3.8'
+
+services:
+  # Node 1
+  node1:
+    build:
+      context: ../../server
+      dockerfile: Dockerfile
+    container_name: ghostnode1
+    hostname: node1
+    ports:
+      - "9001:9000"  # HTTP API
+      - "9091:9090"  # Metrics
+    volumes:
+      - ./nodes/node1/config.yaml:/etc/ghostnodes/config.yaml:ro
+      - ./nodes/node1/keys:/etc/ghostnodes/keys
+      - ./nodes/node1/certs:/etc/ghostnodes/certs
+      - node1_data:/var/lib/ghostnodes/data
+      - node1_logs:/var/log/ghostnodes
+    environment:
+      - NODE_ID=node1
+      - LOG_LEVEL=debug
+    networks:
+      ghostnet:
+        ipv4_address: 172.20.0.11
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Node 2
+  node2:
+    build:
+      context: ../../server
+      dockerfile: Dockerfile
+    container_name: ghostnode2
+    hostname: node2
+    ports:
+      - "9002:9000"  # HTTP API
+      - "9092:9090"  # Metrics
+    volumes:
+      - ./nodes/node2/config.yaml:/etc/ghostnodes/config.yaml:ro
+      - ./nodes/node2/keys:/etc/ghostnodes/keys
+      - ./nodes/node2/certs:/etc/ghostnodes/certs
+      - node2_data:/var/lib/ghostnodes/data
+      - node2_logs:/var/log/ghostnodes
+    environment:
+      - NODE_ID=node2
+      - LOG_LEVEL=debug
+    networks:
+      ghostnet:
+        ipv4_address: 172.20.0.12
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      - node1
+
+  # Node 3
+  node3:
+    build:
+      context: ../../server
+      dockerfile: Dockerfile
+    container_name: ghostnode3
+    hostname: node3
+    ports:
+      - "9003:9000"  # HTTP API
+      - "9093:9090"  # Metrics
+    volumes:
+      - ./nodes/node3/config.yaml:/etc/ghostnodes/config.yaml:ro
+      - ./nodes/node3/keys:/etc/ghostnodes/keys
+      - ./nodes/node3/certs:/etc/ghostnodes/certs
+      - node3_data:/var/lib/ghostnodes/data
+      - node3_logs:/var/log/ghostnodes
+    environment:
+      - NODE_ID=node3
+      - LOG_LEVEL=debug
+    networks:
+      ghostnet:
+        ipv4_address: 172.20.0.13
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      - node1
+      - node2
+
+  # Monitoring: Prometheus (optional, for metrics collection)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ghostnodes-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - ghostnet
+    restart: unless-stopped
+
+  # Monitoring: Grafana (optional, for visualization)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ghostnodes-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - ghostnet
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+networks:
+  ghostnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  node1_data:
+  node1_logs:
+  node2_data:
+  node2_logs:
+  node3_data:
+  node3_logs:
+  prometheus_data:
+  grafana_data:
