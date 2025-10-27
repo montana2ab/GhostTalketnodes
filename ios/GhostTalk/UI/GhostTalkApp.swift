@@ -3,11 +3,16 @@ import SwiftUI
 @main
 struct GhostTalkApp: App {
     @StateObject private var appState = AppState()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
+                .onAppear {
+                    // Connect app delegate to push handler
+                    appDelegate.pushHandler = appState.pushHandler
+                }
         }
     }
 }
@@ -24,6 +29,7 @@ class AppState: ObservableObject {
     let networkClient: NetworkClient
     let crypto: CryptoEngine
     let onionClient: OnionClient
+    let pushHandler: PushHandler
     
     init() {
         self.identityService = IdentityService()
@@ -50,7 +56,19 @@ class AppState: ObservableObject {
             storageManager: storageManager
         )
         
+        // Initialize PushHandler with dependencies
+        self.pushHandler = PushHandler(
+            networkClient: networkClient,
+            identityService: identityService,
+            chatService: chatService
+        )
+        
         checkForExistingIdentity()
+        
+        // Register for push notifications if identity exists
+        if hasIdentity {
+            pushHandler.registerForPushNotifications()
+        }
     }
     
     private func checkForExistingIdentity() {
