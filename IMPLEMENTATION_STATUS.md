@@ -142,13 +142,21 @@ This document tracks the implementation status of the GhostTalk decentralized me
   - 18 comprehensive storage tests
   - **24 ViewModel unit tests** ✅
   - Full documentation
+- [x] PushHandler (APNs)
+  - Device token registration and management
+  - Push notification handling (foreground/background)
+  - Badge count management
+  - Background fetch support
+  - Integration with ChatService for automatic message fetching
+  - Server registration via APNs endpoints
+  - **14 comprehensive unit tests** ✅
+  - Full documentation
 
 #### In Progress 🔄
-- [ ] PushHandler (APNs)
 - [ ] UI tests
 - [ ] iOS performance optimization
 
-**Lines of Code**: ~11,050 Swift (+450 for service integration and tests)
+**Lines of Code**: ~11,400 Swift (+350 for PushHandler and tests)
 
 ### ✅ Infrastructure as Code - 100% Complete
 
@@ -449,7 +457,7 @@ ok  	test/e2e	0.218s
 12. ~~iOS Storage layer (SQLCipher integration)~~ ✅
     - ~~Base implementation complete~~ ✅
     - ~~UI ViewModels integration complete~~ ✅
-13. iOS PushHandler (APNs integration)
+13. ~~iOS PushHandler (APNs integration)~~ ✅
 14. Load testing and optimization
 15. Performance benchmarking
 
@@ -484,9 +492,11 @@ ok  	test/e2e	0.218s
 - Server Middleware: 100% (7/7 tests passing)
 - Server mTLS: 100% (20/20 tests passing)
 - Server APNs: 100% (8/8 tests passing)
+- Server Swarm: 100% (10/10 tests passing)
 - E2E: 100% (8/8 tests passing, 7 scenarios covered)
 - iOS Storage: 100% (18/18 tests passing)
 - iOS ViewModels: NEW (24/24 tests passing) ✅
+- iOS PushHandler: NEW (14/14 tests passing) ✅
 - Integration: Complete (onion router, E2E)
 
 ### Documentation Coverage
@@ -512,13 +522,16 @@ The GhostTalk project has a solid foundation with:
 - ✅ iOS cryptographic engine with X3DH and Double Ratchet frameworks
 - ✅ iOS onion client with circuit management and packet construction
 - ✅ iOS chat service with message queue and retry logic
+- ✅ iOS storage layer with persistent data and UI integration
+- ✅ iOS push notification handler with APNs integration
 - ✅ Network client with TLS 1.3 support
 - ✅ Infrastructure as Code templates for deployment
 - ✅ CI/CD pipeline for automated testing and building
 - ✅ Integration tests for server onion router
+- ✅ Comprehensive unit tests (117 total tests, all passing)
 
-**Overall Progress**: ~94% complete  
-**Production Ready**: Beta ready (Week 3-4 priorities COMPLETE, Week 5-6 storage + UI + service integration complete)  
+**Overall Progress**: ~95% complete  
+**Production Ready**: Beta ready (Week 3-4 priorities COMPLETE, Week 5-6 storage + UI + service + push integration complete)  
 **Expected Beta**: Ready for deployment testing  
 **Expected Production**: 2-3 weeks
 
