@@ -365,10 +365,11 @@ From IMPLEMENTATION_STATUS.md:
 ### Crypto Performance
 
 Excellent performance for all crypto operations:
-- **Key operations**: Fast enough for real-time use
-- **Hashing**: Sub-microsecond for typical messages
-- **HMAC**: Suitable for packet verification
-- **Memory usage**: Minimal allocations
+- **Key operations**: Ed25519 ~22µs, X25519 ~110µs (fast enough for real-time use)
+- **Hashing**: SHA-256 ~734ns for 1KB (sub-microsecond for typical messages)
+- **HMAC**: ~1.2µs for 1KB (suitable for packet verification)
+- **Key derivation**: ~1.9µs with HKDF
+- **Memory usage**: Minimal allocations (0-512 bytes per operation)
 
 ### Onion Routing Performance
 
@@ -424,11 +425,16 @@ go test -bench=. -benchmem ./...
 1. **Network Required**: Scripts require Docker network running
 2. **Apache Bench Dependency**: HTTP test requires `ab` installed
 3. **No Cloud Testing**: Scripts test local network only
-4. **No True 3-hop**: Message test doesn't simulate full onion routing
+4. **No True 3-hop**: Message test doesn't simulate full onion routing - tests direct store/retrieve only (IMPORTANT: This is a limitation for privacy-focused testing. Future work should include true 3-hop packet construction and routing to test the full onion routing path end-to-end)
 5. **Manual Analysis**: Report interpretation requires manual review
 
 ### Future Enhancements
 
+- [ ] **True 3-hop onion routing simulation** (HIGH PRIORITY: Essential for validating privacy guarantees)
+  - Build onion packet construction tool
+  - Test full circuit: Client → Hop1 → Hop2 → Hop3 → Swarm
+  - Measure end-to-end latency for 3-hop path
+  - Validate unlinkability between hops
 - [ ] Automated regression detection
 - [ ] Performance graphs/visualization
 - [ ] Comparison with previous runs
