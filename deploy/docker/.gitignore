@@ -1,0 +1,14 @@
+# Generated keys and certificates
+nodes/*/keys/*
+nodes/*/certs/*
+
+# Keep directory structure
+!nodes/*/keys/.gitkeep
+!nodes/*/certs/.gitkeep
+
+# Backup files
+*.tar.gz
+*.bak
+
+# Logs
+*.log
