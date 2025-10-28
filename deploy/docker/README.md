@@ -241,10 +241,24 @@ ab -n 1000 -c 10 http://localhost:9001/health
 wrk -t4 -c100 -d30s http://localhost:9001/health
 ```
 
-### Custom Test Script
-See `scripts/load-test.sh` (coming soon)
+### Load Testing Scripts ✅
+
+See [LOAD_TESTING.md](LOAD_TESTING.md) for comprehensive guide.
+
+```bash
+# HTTP endpoint load testing
+./scripts/load-test-http.sh
+
+# Message flow load testing
+./scripts/load-test-messages.sh
+
+# Comprehensive performance benchmark
+./scripts/benchmark.sh
+```
 
 ## Performance Benchmarking
+
+See [LOAD_TESTING.md](LOAD_TESTING.md) for detailed benchmarking guide.
 
 Monitor key metrics during testing:
 
